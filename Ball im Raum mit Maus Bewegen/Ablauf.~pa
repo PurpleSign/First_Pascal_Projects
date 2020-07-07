@@ -1,0 +1,101 @@
+unit Ablauf;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Menus, ExtCtrls;
+
+type
+  THintergrund = class(TForm)
+    Menu: TMainMenu;
+    OBall: TShape;
+    Takkter: TTimer;
+    Beenden1: TMenuItem;
+    Pause1: TMenuItem;
+    An1: TMenuItem;
+    Aus1: TMenuItem;
+    procedure Beenden1Click(Sender: TObject);
+    procedure An1Click(Sender: TObject);
+    procedure Aus1Click(Sender: TObject);
+    procedure TakkterTimer(Sender: TObject);
+  private
+    { Private-Deklarationen }
+  public
+    { Public-Deklarationen }
+  end;
+
+var
+  Hintergrund: THintergrund;
+  Pause: Boolean;
+  BrW: Integer;
+  BrS: Integer;
+
+implementation
+
+{$R *.DFM}
+
+procedure THintergrund.Beenden1Click(Sender: TObject);
+begin
+ Close;
+end;
+                               //Pause Ein/Aus
+////////////////////////////////////////////////////////////////////////////////
+procedure THintergrund.An1Click(Sender: TObject);
+begin
+ Pause := True;
+end;
+
+procedure THintergrund.Aus1Click(Sender: TObject);
+begin
+ Pause := False;
+end;
+                               //Ball Bewegung
+////////////////////////////////////////////////////////////////////////////////
+procedure THintergrund.TakkterTimer(Sender: TObject);
+Var
+ RandW: Boolean;
+ RandS: Boolean;
+ Links: Boolean;
+ Oben: Boolean;
+begin
+ If (OBall.Left < 0) or (OBall.Left > 700)
+  Then RandW := True
+  Else RandW := False;
+ If (OBall.Top < 0) or (OBall.Top > 670)
+  Then RandS := True
+  Else RandS := False;
+
+ If Pause = False
+  Then If Links = False
+        Then If RandW = False
+              Then OBall.Left := OBall.Left + BrW
+              Else Begin
+                    Links := True;
+                    OBall.Left := OBall.Left - BrW;
+                   End
+        Else If RandW = False
+              Then OBall.Left := OBall.Left - BrW
+              Else Begin
+                    Links := False;
+                    OBall.Left := OBall.Left + BrW;
+                   End;
+
+ If Pause = False
+  Then If Oben = False
+        Then If RandS = False
+              Then OBall.Top := OBall.Top + BrS
+              Else Begin
+                    Oben := True;
+                    OBall.Top := OBall.Top - BrS;
+                   End
+        Else If RandS = False
+              Then OBall.Top := OBall.Top - BrS
+              Else Begin
+                    Oben := False;
+                    OBall.Top := OBall.Top + BrS;
+                   End;
+end;
+                               //Bewegungsrate
+////////////////////////////////////////////////////////////////////////////////
+end.
